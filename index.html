@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>Intro</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.10/alertify.core.css"/>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.10/alertify.default.css"/>
+    <link rel="stylesheet" href="style.css"/>
+
+    <!-- For IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Javascript -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.3.0/mustache.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.10/alertify.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/masonry/2.1.08/jquery.masonry.min.js"></script>
+    <script src="shortcut.js"></script>
+    <script src="main.js"></script>
+    <script src="profiles.json"></script>
+  </head>
+
+  <body oncontextmenu="return false;">
+    <div class="container">
+      <!-- Intro -->
+      <div id="intro" class="instr" style="display: none;">
+        <h3>
+          この課題では、オンライン上で簡単なプロフィールを作成し、他の参加者が作成したプロフィールを閲覧していただきます。
+        </h3>
+        具体的な操作や指示は、画面の案内に従って進めてください。<br/><br/>
+        <b>画面上の「次へ」を押してください。</b><br/><br/>
+        <button type="submit" id="submit_intro">次へ</button>
+      </div>
+
+      <!-- Username -->
+      <div id="name" class="instr" style="display: none;">
+        <h3>名前を入力してください。</h3>
+        名前、ニックネーム、またはイニシャルでも構いません。<br/><br/>
+        <input type="text" id="username" autocomplete="off"/><br/><br/>
+        <button type="submit" id="submit_username">次へ</button>
+      </div>
+
+      <!-- Avatar -->
+      <div id="avatar" style="display: none;">
+        <h3>アバターを選んでください。</h3>
+        このアバターはプロフィール上であなたの顔写真の代わりとして表示され、他の参加者にも共有されますが、あなたの解答とは結び付きません。<br/>
+        選んだアバターは、記録・分析されません。<br/><br/>
+
+        <div class="avatars"></div>
+
+        <br/>
+        <button type="submit" id="submit_avatar">次へ</button>
+        <br/><br/>
+      </div>
+
+      <!-- Description -->
+      <div id="text" class="instr" style="display: none;">
+        <h3>プロフィールを入力してください。</h3>
+        これから、数名の参加者からなるグループが作られます。<br/>
+        グループの参加者が閲覧するプロフィールとして、短い文章を 50 字以上 100 字以内で書いてください。<br/>
+        自分について伝えたいこと、共有したいことなら何でも構いません。<br/><br/>
+        <textarea id="description" autocomplete="off"></textarea><br/>
+        <span id="count">現在の文字数: 0</span><br/><br/>
+        <button type="submit" id="submit_text">次へ</button>
+      </div>
+
+      <!-- Login -->
+      <div id="fb_intro" class="instr" style="display: none;">
+        <h3>プロフィール閲覧</h3>
+        接続後、他の参加者のプロフィールが表示されます。<br/>
+        プロフィールを読み、関心を持った場合には「いいね」ボタンをクリックして反応することができます。<br/>
+        （SNS でよく見られる「いいね」機能と同様の操作です。）<br/><br/>
+
+        表示されるプロフィールを読んで、それぞれの参加者について理解を深めてください。<br/>
+        限られた情報からでも、他の参加者がどのような人かについて、自分なりの印象を持つようにしてください。<br/><br/>
+
+        この課題は一定時間行われます。<br/>
+        ページを切り替えたり、他の作業を行わず、画面の内容に注意を向けて取り組んでください。<br/>
+        後の課題で、他の参加者について質問される場合があります。<br/><br/>
+
+        <b>指示を理解したら、ログインしてください。</b><br/><br/>
+        <button type="submit" id="submit_fb_intro">ログイン</button>
+      </div>
+
+      <!-- Login screen -->
+      <div id="fb_login" class="instr" style="display: none;">
+        <h3>接続中</h3>
+        グループの他の参加者が接続されるまでお待ちください。<br/><br/>
+
+        <div id="msg_all_done" style="display: none;">
+          <br/>
+          <b>すべての参加者が接続され、次に進む準備が整いました。</b><br/><br/>
+          <button type="submit" id="submit_fb_login">次へ</button>
+        </div>
+      </div>
+
+      <div id="task" style="display: none;">
+        <div id="countdown">
+          <span class="secs" style="display: none;"></span>
+          誰かのプロフィールが気に入ったら、「いいね」をクリックできます。<br/><br/>
+          残り時間:<br/>
+          <span id="timer" class="cntr label label-info"></span><br/>
+          <button type="submit" id="final-continue" style="display: none;">次へ</button>
+        </div>
+      </div>
+
+      <!-- Templates -->
+      <script type="text/template" id="usertmp">
+        {{#posts}}
+        <div class="entry">
+          <div class="tophalf">
+            <img src="{{avatar}}" class="avatar" />
+            <h3>{{username}}</h3>
+            <div class="main">
+              <p>{{text}}</p>
+            </div>
+            <br style="clear: both;" />
+          </div>
+
+          <div class="bottomhalf">
+            Likes
+            <span
+              class="badge badge-custom userslikes"
+              data-likes="{{likes}}"
+              data-usernames="{{usernames}}"
+              >0</span
+            >
+          </div>
+        </div>
+        {{/posts}}
+      </script>
+
+      <!-- Others template -->
+      <script type="text/template" id="otherstmp">
+        {{#posts}}
+        <div class="entry">
+          <div class="tophalf">
+            <img src="{{avatar}}" class="avatar" />
+            <h3>{{username}}</h3>
+            <div class="main">
+              <p>{{text}}</p>
+            </div>
+            <br style="clear: both;" />
+          </div>
+
+          <div class="bottomhalf">
+            いいね
+            <span
+              class="badge badge-custom otherslikes"
+              data-likes="{{likes}}"
+              >0</span
+            >
+            <button
+              type="submit"
+              class="btn pull-right btn-like btn-custom btn-deround"
+            >
+              いいね <i class="icon-thumbs-up icon-white"></i>
+            </button>
+          </div>
+        </div>
+        {{/posts}}
+      </script>
+    </div>
+  </body>
+</html>
